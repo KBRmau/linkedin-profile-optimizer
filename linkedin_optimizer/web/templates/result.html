@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultado — DevProfile</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="badge">Diagnóstico</div>
+      <h1>{{ result.profile.name or "Seu perfil" }}</h1>
+      <p>Alvo: <strong>{{ target.role }}</strong> · {{ market_label }} · {{ target.seniority }} · perfil em {{ target.language }}</p>
+    </header>
+
+    <div class="grid-2">
+      <div class="card score-ring">
+        <div class="score-value" style="color: {% if result.score >= 70 %}var(--ok){% elif result.score >= 45 %}var(--warn){% else %}var(--crit){% endif %}">
+          {{ result.score }}
+        </div>
+        <div class="score-label">Score de posicionamento / 100</div>
+        <p class="help" style="margin-top:0.75rem">
+          {{ result.critical_count }} crítico(s) · {{ result.warning_count }} alerta(s)
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>SSI — {{ ssi_interp.total }}/100</h2>
+        {% if ssi_interp.total_rating %}
+        <div class="score-pill {{ ssi_interp.total_rating.color }}">{{ ssi_interp.total_rating.rating | upper }}</div>
+        <p class="help">{{ ssi_interp.total_rating.summary }}</p>
+        {% endif %}
+        {% if ssi_interp.weakest %}
+        <p class="help"><strong>Prioridade:</strong> {{ ssi_interp.weakest.label }} ({{ ssi_interp.weakest.score }}/25)</p>
+        <p class="help">{{ ssi_interp.weakest.advice }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Pilares do SSI — o que melhorar</h2>
+      <p class="help">Cada cor do SSI indica um tipo de ação. Foque no pilar mais baixo primeiro.</p>
+
+      {% for p in ssi_interp.pillars %}
+      <div class="pillar-card {{ p.color }}">
+        <h3><span class="pillar-dot {{ p.color }}"></span> {{ p.color_pt }} — {{ p.label }}</h3>
+        <div class="score-pill">{{ p.score }}/25 · <strong>{{ p.rating }}</strong></div>
+        <p class="meaning">{{ p.meaning }}</p>
+        <ul>
+          {% for tip in p.tips %}
+          <li>{{ tip }}</li>
+          {% endfor %}
+        </ul>
+        {% if p.fix_prompt %}
+        <details class="fix-prompt-box">
+          <summary>Prompt para IA — plano de ação neste pilar</summary>
+          <pre class="report-pre fix-prompt-pre" id="ssi-prompt-{{ loop.index0 }}">{{ p.fix_prompt }}</pre>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyById('ssi-prompt-{{ loop.index0 }}')">Copiar prompt</button>
+        </details>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      {% if ssi_interp.action_plan %}
+      <div class="action-plan">
+        <h3>Plano rápido — comece por aqui</h3>
+        <ul>
+          {% for tip in ssi_interp.action_plan %}
+          <li>{{ tip }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+
+    {% macro finding_card(f, prefix, idx) %}
+    <div class="finding {{ f.severity }}">
+      <strong>{{ f.area }}</strong> — {{ f.message }}
+      {% if f.suggestion %}<div class="suggestion">→ {{ f.suggestion }}</div>{% endif %}
+      {% if f.area == 'featured' %}
+      <div class="featured-example">
+        <p class="help">Exemplo de seção Featured (certificação no Credly):</p>
+        <img src="/static/img/featured-example.png" alt="Exemplo de seção Featured no LinkedIn" loading="lazy">
+      </div>
+      {% endif %}
+      {% if f.area == 'open_to_work' and 'Recruiters only' in f.message %}
+      <div class="featured-example">
+        <p class="help">Exemplo de configuração (Recruiters only · Start date Immediately):</p>
+        <img src="/static/img/open-to-work-example.png" alt="Exemplo de configuração Open to Work no LinkedIn" loading="lazy">
+      </div>
+      {% endif %}
+      {% if f.area == 'profile_language' %}
+      <div class="featured-example">
+        <p class="help">Exemplo (Profile language definido como English):</p>
+        <img src="/static/img/profile-language-example.png" alt="Exemplo de Profile language no LinkedIn" loading="lazy">
+      </div>
+      {% endif %}
+      {% if f.fix_prompt %}
+      <details class="fix-prompt-box">
+        <summary>Prompt para IA — corrigir no LinkedIn</summary>
+        <pre class="report-pre fix-prompt-pre" id="{{ prefix }}-{{ idx }}">{{ f.fix_prompt }}</pre>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="copyById('{{ prefix }}-{{ idx }}')">Copiar prompt</button>
+      </details>
+      {% endif %}
+    </div>
+    {% endmacro %}
+
+    {% if critical %}
+    <div class="card">
+      <h2>Corrigir agora (crítico)</h2>
+      <p class="help">Abra o prompt de cada item, cole no ChatGPT/Cursor e aplique a correção na seção indicada do LinkedIn.</p>
+      {% for f in critical %}
+      {{ finding_card(f, 'crit', loop.index0) }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if warnings %}
+    <div class="card">
+      <h2>Melhorias recomendadas</h2>
+      {% for f in warnings %}
+      {{ finding_card(f, 'warn', loop.index0) }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if infos %}
+    <div class="card">
+      <h2>Otimizações extras</h2>
+      {% for f in infos %}
+      {{ finding_card(f, 'info', loop.index0) }}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <h2>Relatório completo</h2>
+      <pre class="report-pre" id="report-md">{{ result.report_md }}</pre>
+      <button type="button" class="btn btn-secondary" onclick="copyById('report-md')">Copiar relatório</button>
+    </div>
+
+    <div class="card">
+      <h2>Prompt para reescrever o perfil inteiro (LLM / Cursor)</h2>
+      <p class="help">Use este para uma reescrita completa. Para corrigir ponto a ponto, prefira os prompts acima em cada erro.</p>
+      <pre class="report-pre" id="prompt-md">{{ result.prompt_md }}</pre>
+      <button type="button" class="btn btn-secondary" onclick="copyById('prompt-md')">Copiar prompt</button>
+    </div>
+
+    <a href="/" class="btn" style="text-decoration:none;margin-top:1rem">← Analisar outro perfil</a>
+
+    <footer>DevProfile · auditoria heurística — revise o PDF parseado se algo parecer incompleto</footer>
+  </div>
+
+  <script>
+    function copyById(id) {
+      const el = document.getElementById(id);
+      navigator.clipboard.writeText(el.textContent).then(() => alert('Prompt copiado!'));
+    }
+  </script>
+</body>
+</html>

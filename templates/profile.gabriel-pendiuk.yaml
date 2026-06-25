@@ -1,0 +1,102 @@
+# Exemplo real — perfil bem posicionado para Data Engineer internacional
+# SSI: 54/100 (top 3% indústria) — inbound alto de recrutadores
+# Fonte: PDF LinkedIn + print SSI
+
+name: Gabriel Pendiuk
+headline: >-
+  Senior Data Engineer | Cloud Data Platforms & AI Automation | GCP · Azure ·
+  Airflow · Spark · BigQuery · Terraform
+about: |
+  Senior Data Engineer and Cloud Data Architect with 6+ years building scalable,
+  governed data platforms on GCP and Azure. At Groupon: petabyte-scale platform,
+  2,000+ pipelines, 500+ Airflow DAGs, K8s incident automation (~66K events/day),
+  multi-agent AI remediation (~70% KTLO resolution). Previously Artefact:
+  Heineken profit-sharing 2 days → 10 min, 132 Ab Initio → Azure Databricks migrations.
+
+current_title: Principal Data Engineer / Senior Data Engineer
+location: São Paulo, Brazil
+
+experiences:
+  - title: Principal Data Engineer / Senior Data Engineer
+    company: Groupon
+    start: "2023-12"
+    end: Present
+    bullets:
+      - Led architecture for petabyte-scale GCP platform (2,000+ pipelines, 500+ DAGs)
+      - Built K8s incident automation (~66K Airflow events/day, Jira/JSM integration)
+      - Productionized multi-agent AI remediation (~70% KTLO auto-resolution)
+      - Built ~50 CDP pipelines (Airflow, PySpark, Dataproc, Bloomreach)
+      - YAML-driven Terraform framework for 1,000+ GCP resources
+    skills:
+      - GCP
+      - Airflow
+      - Kubernetes
+      - Terraform
+  - title: Senior Data Engineer
+    company: Artefact
+    start: "2021-01"
+    end: "2023-12"
+    bullets:
+      - Heineken profit-sharing pipeline — 2 days → 10 minutes
+      - Migrated 132 Ab Initio pipelines to Azure Databricks
+      - Treasure Data CDP for Cirque du Soleil and Stanley Black & Decker
+    skills:
+      - Azure
+      - Databricks
+      - PySpark
+
+education:
+  - school: Federal University of Technology - Parana
+    degree: Bachelor's degree, Computer Engineering
+    start: "2017"
+    end: "2022"
+
+skills:
+  - Cloud Services
+  - Kubernetes
+  - Artificial Intelligence (AI)
+  - GCP
+  - Airflow
+  - Spark
+  - BigQuery
+  - Terraform
+  - Databricks
+  - PySpark
+
+certifications:
+  - Master Power BI - De A à Z
+  - CCNA Introduction to Networks
+  - Keboola Data Engineer Certificate
+
+languages:
+  - English (Full Professional)
+
+featured: []
+
+ssi:
+  professional_brand: 17.42
+  find_people: 10.01
+  engage_insights: 11.0
+  build_relationships: 15.6
+
+target:
+  role: Senior Data Engineer
+  audience: recruiters
+  market: gringa
+  seniority: senior
+  language: en
+  tone: technical
+  keywords:
+    - data engineering
+    - gcp
+    - airflow
+    - spark
+    - bigquery
+    - kubernetes
+    - terraform
+    - databricks
+
+notes: |
+  Perfil bem posicionado (headline + about + bullets quantificados em inglês).
+  Recebe muitos contatos de recrutadores apesar do SSI total 54.
+  Gargalos SSI: Roxo (rede) e Verde (engajamento) — não o perfil em si.

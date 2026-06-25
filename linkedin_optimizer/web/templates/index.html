@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevProfile — LinkedIn para devs</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="badge">Para desenvolvedores</div>
+      <h1>Receba mais contatos no LinkedIn</h1>
+      <p>Audite seu perfil em minutos: envie o PDF do LinkedIn + scores do SSI e descubra o que está impedindo recrutadores de te chamarem.</p>
+    </header>
+
+    <div class="steps">
+      <div class="step"><strong>1. Exporte o PDF</strong><span>Perfil → Mais → Salvar em PDF</span></div>
+      <div class="step"><strong>2. Abra o SSI</strong><span><a href="{{ ssi_url }}" target="_blank" rel="noopener">linkedin.com/sales/ssi</a></span></div>
+      <div class="step"><strong>3. Diagnóstico</strong><span>Score + plano de ação para devs</span></div>
+    </div>
+
+    {% if error %}
+    <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="/audit" method="post" enctype="multipart/form-data">
+
+      <div class="card">
+        <h2><span class="num">1</span> Cargo que você quer atrair</h2>
+        <div class="grid-2">
+          <div>
+            <label for="role_key">Stack / área</label>
+            <select name="role_key" id="role_key">
+              {% for key, preset in roles.items() %}
+              <option value="{{ key }}">{{ preset.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label for="custom_role">Cargo customizado (opcional)</label>
+            <input type="text" name="custom_role" id="custom_role" placeholder="ex: Senior Platform Engineer">
+          </div>
+          <div>
+            <label for="seniority">Senioridade</label>
+            <select name="seniority" id="seniority">
+              <option value="junior">Junior</option>
+              <option value="mid">Mid-level</option>
+              <option value="senior" selected>Senior</option>
+              <option value="staff">Staff / Principal</option>
+              <option value="lead">Tech Lead</option>
+            </select>
+          </div>
+          <div>
+            <label for="market">Mercado</label>
+            <select name="market" id="market">
+              <option value="brasil">Brasil</option>
+              <option value="gringa" selected>Gringa</option>
+            </select>
+          </div>
+          <div>
+            <label for="language">Idioma do perfil-alvo</label>
+            <select name="language" id="language">
+              <option value="pt">Português</option>
+              <option value="en" selected>Inglês</option>
+              <option value="bilingual">Bilíngue</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span> PDF do seu perfil LinkedIn</h2>
+        <div class="dropzone" id="pdf-zone">
+          <input type="file" name="profile_pdf" accept=".pdf,application/pdf" required id="profile_pdf">
+          <div class="icon">📄</div>
+          <div class="title">Arraste o PDF aqui ou clique para selecionar</div>
+          <div class="hint">LinkedIn → seu perfil → Mais → <strong>Salvar em PDF</strong></div>
+          <div class="file-name" id="pdf-name"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">3</span> Scores do SSI (Social Selling Index)</h2>
+        <p class="help">
+          Abra <a href="{{ ssi_url }}" target="_blank" rel="noopener">linkedin.com/sales/ssi</a>
+          e digite os 4 scores que aparecem em <strong>Four components of your score</strong>
+          (use decimais como no LinkedIn: ex. 17.42, 10.01, 11, 15.6).
+        </p>
+        <p class="help">
+          🟠 Laranja = perfil · 🟣 Roxo = rede · 🟢 Verde = posts/comentários · 🩵 Teal = relacionamentos
+        </p>
+
+        <div class="ssi-grid">
+          <div>
+            <label for="ssi_brand">Professional brand</label>
+            <input type="number" name="ssi_brand" id="ssi_brand" min="0" max="25" step="0.001" required placeholder="ex: 17.42">
+          </div>
+          <div>
+            <label for="ssi_find">Find the right people</label>
+            <input type="number" name="ssi_find" id="ssi_find" min="0" max="25" step="0.001" required placeholder="ex: 10.01">
+          </div>
+          <div>
+            <label for="ssi_engage">Engage with insights</label>
+            <input type="number" name="ssi_engage" id="ssi_engage" min="0" max="25" step="0.001" required placeholder="ex: 11">
+          </div>
+          <div>
+            <label for="ssi_relationships">Build relationships</label>
+            <input type="number" name="ssi_relationships" id="ssi_relationships" min="0" max="25" step="0.001" required placeholder="ex: 15.6">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Analisar meu perfil →</button>
+    </form>
+
+    <footer>
+      Sem scraping · seus dados não são salvos permanentemente · feito para devs que querem mais inbound
+    </footer>
+  </div>
+
+  <script>
+    function bindDropzone(zoneId, inputId, nameId) {
+      const zone = document.getElementById(zoneId);
+      const input = document.getElementById(inputId);
+      const nameEl = document.getElementById(nameId);
+      input.addEventListener('change', () => {
+        nameEl.textContent = input.files[0] ? '✓ ' + input.files[0].name : '';
+      });
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          nameEl.textContent = '✓ ' + e.dataTransfer.files[0].name;
+        }
+      });
+    }
+    bindDropzone('pdf-zone', 'profile_pdf', 'pdf-name');
+  </script>
+</body>
+</html>

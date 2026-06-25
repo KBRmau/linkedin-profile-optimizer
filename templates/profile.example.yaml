@@ -1,0 +1,72 @@
+name: Ana Souza
+headline: >-
+  Senior Data Engineer | Data Platform, Lakehouse & Analytics | Python · SQL · Airflow · Spark · dbt · Iceberg
+about: ""
+current_title: Data Engineer
+location: São Paulo, Brazil
+
+experiences:
+  - title: Data Engineer
+    company: Acme Tech
+    start: "2023"
+    end: Present
+    description: ""
+    bullets:
+      - Construí pipelines em Airflow para ingestão de 12 fontes
+      - Reduzi custo de warehouse em 30% migrando para Iceberg
+    skills:
+      - Python
+      - Airflow
+      - dbt
+  - title: Analytics Engineer
+    company: Beta Corp
+    start: "2021"
+    end: "2023"
+    description: ""
+    bullets:
+      - Modelagem dimensional no dbt para o time de BI
+      - Implementei testes de qualidade de dados
+
+education:
+  - school: Universidade Federal do Paraná
+    degree: BSc
+    field_of_study: Computer Science
+    start: "2016"
+    end: "2020"
+
+skills:
+  - Python
+  - SQL
+  - Airflow
+  - dbt
+  - Apache Iceberg
+
+certifications: []
+languages:
+  - Portuguese (native)
+  - English (professional)
+
+featured: []
+recent_posts: []
+
+ssi:
+  professional_brand: 18
+  find_people: 14
+  engage_insights: 9
+  build_relationships: 15
+
+target:
+  role: Senior Data Engineer
+  audience: hiring-managers
+  market: gringa
+  seniority: senior
+  language: en
+  tone: technical
+  keywords:
+    - data engineering
+    - python
+    - spark
+    - lakehouse
+    - dbt
+    - airflow
+  job_descriptions: []
