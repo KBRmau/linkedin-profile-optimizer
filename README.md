@@ -20,6 +20,16 @@ python -m linkedin_optimizer serve
 
 Abra **http://127.0.0.1:8000**
 
+## Como gerar o PDF do seu perfil
+
+1. Acesse o **seu perfil** no LinkedIn (web): clique na sua foto → **Ver perfil**.
+2. Logo abaixo da foto/headline, clique no botão **More** / **Mais** (ao lado de *Add profile section*).
+3. Selecione **Save to PDF** / **Salvar em PDF**.
+4. O LinkedIn gera e baixa um PDF (geralmente em `Downloads`) — é esse arquivo que você envia aqui.
+
+> Dica: use o LinkedIn no **navegador (desktop)**. No app do celular a opção pode não aparecer.
+> O PDF não traz Featured nem foto — isso é esperado; a auditoria avisa o que verificar manualmente.
+
 ### Fluxo na página
 
 1. **Escolha o cargo-alvo** — Backend, Data Engineer, DevOps, etc.
