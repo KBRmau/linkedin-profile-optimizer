@@ -34,7 +34,7 @@ PILLAR_META: dict[str, dict] = {
             "Sua rede está fraca para inbound — adicione recrutadores e pessoas da mesma área.",
             "No search do LinkedIn, busque: \"Technical Recruiter\" + sua stack (ex: Data Engineer recruiter GCP).",
             "Busque o cargo-alvo (ex: \"Senior Data Engineer\") e conecte com 10–20 pessoas por semana.",
-            "Busque \"Talent Acquisition\" + empresa-alvo (Groupon, Nubank, etc.) e adicione os recrutadores.",
+            "Busque \"Talent Acquisition\" + empresa-alvo (onde você quer trabalhar) e adicione os recrutadores.",
             "Conecte com colegas de empresas onde você quer trabalhar — mesmo sem conversar ainda.",
             "Siga páginas de empresas-alvo e comente nos posts delas (ajuda o algoritmo a te mostrar).",
             "Use o filtro People → Current company → cargo para mapear quem já está na posição que você quer.",

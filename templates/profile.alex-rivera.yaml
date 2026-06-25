@@ -2,23 +2,23 @@
 # SSI: 54/100 (top 3% indústria) — inbound alto de recrutadores
 # Fonte: PDF LinkedIn + print SSI
 
-name: Gabriel Pendiuk
+name: Alex Rivera
 headline: >-
   Senior Data Engineer | Cloud Data Platforms & AI Automation | GCP · Azure ·
   Airflow · Spark · BigQuery · Terraform
 about: |
   Senior Data Engineer and Cloud Data Architect with 6+ years building scalable,
-  governed data platforms on GCP and Azure. At Groupon: petabyte-scale platform,
+  governed data platforms on GCP and Azure. At ShopNova: petabyte-scale platform,
   2,000+ pipelines, 500+ Airflow DAGs, K8s incident automation (~66K events/day),
-  multi-agent AI remediation (~70% KTLO resolution). Previously Artefact:
-  Heineken profit-sharing 2 days → 10 min, 132 Ab Initio → Azure Databricks migrations.
+  multi-agent AI remediation (~70% KTLO resolution). Previously DataForge:
+  profit-sharing process 2 days → 10 min, 132 legacy pipelines → Azure Databricks migrations.
 
 current_title: Principal Data Engineer / Senior Data Engineer
 location: São Paulo, Brazil
 
 experiences:
   - title: Principal Data Engineer / Senior Data Engineer
-    company: Groupon
+    company: ShopNova
     start: "2023-12"
     end: Present
     bullets:
@@ -33,20 +33,20 @@ experiences:
       - Kubernetes
       - Terraform
   - title: Senior Data Engineer
-    company: Artefact
+    company: DataForge
     start: "2021-01"
     end: "2023-12"
     bullets:
-      - Heineken profit-sharing pipeline — 2 days → 10 minutes
-      - Migrated 132 Ab Initio pipelines to Azure Databricks
-      - Treasure Data CDP for Cirque du Soleil and Stanley Black & Decker
+      - Profit-sharing pipeline for a Fortune 500 client — 2 days → 10 minutes
+      - Migrated 132 legacy pipelines to Azure Databricks
+      - Treasure Data CDP for two Fortune 500 enterprise clients
     skills:
       - Azure
       - Databricks
       - PySpark
 
 education:
-  - school: Federal University of Technology - Parana
+  - school: State University of Technology
     degree: Bachelor's degree, Computer Engineering
     start: "2017"
     end: "2022"

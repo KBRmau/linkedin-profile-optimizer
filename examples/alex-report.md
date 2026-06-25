@@ -1,9 +1,9 @@
-# LinkedIn Positioning Audit — Gabriel Pendiuk
+# LinkedIn Positioning Audit — Alex Rivera
 
 **Cargo-alvo:** Senior Data Engineer  
-**Público:** recruiters · **Mercado:** global-remote · **Senioridade:** senior · **Idioma:** en · **Tom:** technical
+**Público:** recruiters · **Mercado:** gringa · **Senioridade:** senior · **Idioma:** en · **Tom:** technical
 
-**Score de posicionamento (heurístico):** 98/100
+**Score de posicionamento (heurístico):** 92/100
 
 ## SSI
 **Total:** 54.0/100
@@ -29,7 +29,7 @@ _Se sua rede não tem recrutadores e profissionais da sua área, você não apar
 - Sua rede está fraca para inbound — adicione recrutadores e pessoas da mesma área.
 - No search do LinkedIn, busque: "Technical Recruiter" + sua stack (ex: Data Engineer recruiter GCP).
 - Busque o cargo-alvo (ex: "Senior Data Engineer") e conecte com 10–20 pessoas por semana.
-- Busque "Talent Acquisition" + empresa-alvo (Groupon, Nubank, etc.) e adicione os recrutadores.
+- Busque "Talent Acquisition" + empresa-alvo (onde você quer trabalhar) e adicione os recrutadores.
 - Conecte com colegas de empresas onde você quer trabalhar — mesmo sem conversar ainda.
 - Siga páginas de empresas-alvo e comente nos posts delas (ajuda o algoritmo a te mostrar).
 - Use o filtro People → Current company → cargo para mapear quem já está na posição que você quer.
@@ -60,13 +60,20 @@ _Conexão sem conversa não gera oportunidade. Relacionamento sim._
 ## Diagnóstico por área
 
 ### Headline
-- [OK] Headline direcionada ao cargo-alvo.
+- [OK] Headline no padrão Posição | Áreas | Tecnologias.
 
 ### Language
-- [OK] Perfil em inglês, alinhado ao mercado-alvo.
+- [OK] Perfil em inglês com English listado em Languages.
 
 ### Featured
-- [INFO] Featured section vazia. → Destaque projetos, artigos ou cases que provem o posicionamento-alvo.
+- [INFO] Featured não vem no PDF — verifique manualmente se você tem uma seção em Destaque. → Vale muito ter um Featured: certificação (ex: Azure Data Engineer no Credly), projeto no GitHub, artigo técnico ou case. Veja o exemplo na página.
+
+### Open_to_work
+- [INFO] Open to Work: ative como "Recruiters only" para receber mais contatos. → Evite "All LinkedIn members" (o badge #OpenToWork passa impressão de desespero). Recruiters only mostra disponibilidade só para quem usa o LinkedIn Recruiter. Veja o exemplo de configuração na página.
+- [INFO] Start date: marque "Immediately, I am actively applying". → Geralmente traz mais contatos do que "Flexible / casually looking", porque recrutadores priorizam quem está pronto para começar.
+
+### Profile_language
+- [INFO] Profile language principal: use o idioma dos países-alvo (inglês). → O Profile language principal deve ser o mesmo idioma dos países onde você busca emprego — tende a trazer melhores resultados na busca de recrutadores. Veja o exemplo na página.
 
 ## Plano de ação (prioridade)
 Nenhum item crítico ou de alerta. Foque em otimizações `info` e em conteúdo.

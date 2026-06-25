@@ -1,4 +1,4 @@
-# Exemplo: Gabriel Pendiuk — perfil bem posicionado
+# Exemplo: Alex Rivera — perfil bem posicionado
 
 Perfil de referência para **dev que recebe inbound de recrutadores** mesmo com SSI total moderado.
 
@@ -20,7 +20,7 @@ Perfil de referência para **dev que recebe inbound de recrutadores** mesmo com 
 | 🟢 Verde | Engage with insights | 11/25 | **fraco** | Postar e comentar mais (1 post técnico/semana mínimo) |
 | 🩵 Teal | Build relationships | 15.6/25 | ok | Conversar com conexões, reativar rede |
 
-**Lição:** SSI baixo em Roxo/Verde **não significa** perfil ruim. Gabriel recebe contatos porque **Laranja (marca)** está forte: headline clara, about com escala (petabyte, 2000 pipelines), bullets quantificados.
+**Lição:** SSI baixo em Roxo/Verde **não significa** perfil ruim. O perfil recebe contatos porque **Laranja (marca)** está forte: headline clara, about com escala (petabyte, 2000 pipelines), bullets quantificados.
 
 ## O que o perfil faz certo (copie isso)
 
@@ -35,7 +35,7 @@ Senior Data Engineer | Cloud Data Platforms & AI Automation | GCP · Azure · Ai
 
 **Skills:** Cloud, K8s, AI — alinhadas ao cargo.
 
-## Plano SSI para Gabriel (se quiser subir de 54 → 70+)
+## Plano SSI (se quiser subir de 54 → 70+)
 
 1. **Roxo:** buscar "Technical Recruiter Data" + conectar 15/semana
 2. **Verde:** 1 post técnico/semana (Airflow, GCP, AI agents)
@@ -45,7 +45,7 @@ Senior Data Engineer | Cloud Data Platforms & AI Automation | GCP · Azure · Ai
 
 ```bash
 python -m linkedin_optimizer audit \
-  --profile templates/profile.gabriel-pendiuk.yaml \
-  --out examples/gabriel-report.md \
-  --prompt examples/gabriel-prompt.md
+  --profile templates/profile.alex-rivera.yaml \
+  --out examples/alex-report.md \
+  --prompt examples/alex-prompt.md
 ```
