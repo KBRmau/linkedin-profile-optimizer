@@ -5,39 +5,69 @@ from pathlib import Path
 
 from ..models import Education, Experience, Profile
 
-SECTION_HEADERS = [
-    "Summary",
-    "About",
-    "Experience",
-    "Education",
-    "Licenses & Certifications",
-    "Licenses and Certifications",
-    "Certifications",
-    "Skills",
-    "Languages",
-    "Honors & Awards",
-    "Projects",
-    "Recommendations",
-]
+# Canonical section -> header variants (EN / PT / ES) as exported by LinkedIn "Save to PDF".
+SECTION_ALIASES: dict[str, list[str]] = {
+    "summary": ["Summary", "About", "Resumo", "Sobre", "Extracto", "Acerca de"],
+    "experience": ["Experience", "Experiência", "Experiencia"],
+    "education": ["Education", "Formação acadêmica", "Formacao academica", "Educación", "Educacion", "Formación"],
+    "certifications": [
+        "Licenses & Certifications", "Licenses and Certifications", "Certifications",
+        "Licenças e certificados", "Licencas e certificados", "Certificações", "Certificacoes",
+        "Licencias y certificaciones", "Certificaciones",
+    ],
+    "skills": ["Skills", "Top Skills", "Competências", "Competencias", "Principais competências", "Aptitudes"],
+    "languages": ["Languages", "Idiomas"],
+    "honors": ["Honors & Awards", "Honras e prêmios", "Honras e premios", "Honores y premios"],
+    "projects": ["Projects", "Projetos", "Proyectos"],
+    "recommendations": ["Recommendations", "Recomendações", "Recomendacoes", "Recomendaciones"],
+    "contact": ["Contact", "Contato", "Contacto"],
+}
 
-PAGE_NOISE = re.compile(r"^(--\s*\d+\s+of\s+\d+\s*--|Page\s+\d+\s+of\s+\d+)$", re.I)
+# Lowercased header text -> canonical section key.
+HEADER_TO_CANONICAL: dict[str, str] = {
+    variant.lower(): canonical
+    for canonical, variants in SECTION_ALIASES.items()
+    for variant in variants
+}
+
+PAGE_NOISE = re.compile(r"^(--\s*\d+\s+of\s+\d+\s*--|Page\s+\d+\s+of\s+\d+|Página\s+\d+\s+de\s+\d+)$", re.I)
+
+MONTHS = (
+    # English
+    "January|February|March|April|May|June|July|August|September|October|November|December|"
+    "Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec|"
+    # Portuguese
+    "janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|"
+    "jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez|"
+    # Spanish
+    "enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|"
+    "ene|feb|abr|may|ago|sep|oct|nov|dic"
+)
+PRESENT_WORDS = r"Present|Presente|Atual|Actual|Actualidad|o momento|hoje|hoy"
 DATE_LINE = re.compile(
-    r"(January|February|March|April|May|June|July|August|September|October|November|December|"
-    r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
-    r".*\d{4}.*(Present|\d{4})",
+    rf"({MONTHS})" rf".*\d{{4}}.*({PRESENT_WORDS}|\d{{4}})",
     re.I,
 )
 BULLET_START = re.compile(r"^[•\uf0b7\u2022\-–]\s*|^\uFFFD\s*")
 TITLE_HINT = re.compile(
-    r"\b(Engineer|Developer|Architect|Manager|Lead|Director|Analyst|Consultant|Intern|Specialist)\b",
+    r"\b(Engineer|Developer|Architect|Manager|Lead|Director|Analyst|Consultant|Intern|Specialist|"
+    r"Engenheiro|Engenheira|Desenvolvedor|Desenvolvedora|Arquiteto|Arquiteta|Gerente|Analista|"
+    r"Consultor|Consultora|Estagiário|Estagiaria|Especialista|Líder|Diretor|Diretora|"
+    r"Ingeniero|Ingeniera|Desarrollador|Arquitecto|Gerente|Analista|Consultor|Becario|Especialista)\b",
     re.I,
 )
 ACTION_START = re.compile(
     r"^(Led|Built|Created|Implemented|Migrated|Re-architected|Productionized|Designed|"
-    r"Developed|Managed|Owned|Automated|Reduced|Improved|Architected|Delivered|Established)",
+    r"Developed|Managed|Owned|Automated|Reduced|Improved|Architected|Delivered|Established|"
+    r"Liderei|Construí|Construi|Criei|Implementei|Migrei|Desenvolvi|Gerenciei|Automatizei|"
+    r"Reduzi|Aumentei|Otimizei|Entreguei|Projetei|Arquitetei|Implementé|Desarrollé|Creé|Lideré)",
     re.I,
 )
-LOCATION_LINE = re.compile(r",\s*(Brazil|United States|IL|SP|UK|Remote)\s*$", re.I)
+LOCATION_LINE = re.compile(
+    r",\s*(Brazil|Brasil|United States|Estados Unidos|IL|SP|RJ|PR|UK|Remote|Remoto|"
+    r"Portugal|España|Espanha|Mexico|México|Argentina)\s*$",
+    re.I,
+)
 
 
 def _extract_text(path: str | Path) -> str:
@@ -58,17 +88,19 @@ def _split_sections(text: str) -> dict[str, str]:
     sections: dict[str, str] = {}
     current = "_top"
     buffer: list[str] = []
-    header_set = {h.lower() for h in SECTION_HEADERS}
 
     for line in lines:
-        stripped = line.strip()
-        if stripped.lower() in header_set:
-            sections[current] = "\n".join(buffer).strip()
-            current = stripped.lower()
+        canonical = HEADER_TO_CANONICAL.get(line.strip().lower())
+        if canonical:
+            # Preserve any text already collected for this section (e.g. sidebar split).
+            existing = sections.get(current, "")
+            sections[current] = (existing + "\n" + "\n".join(buffer)).strip() if existing else "\n".join(buffer).strip()
+            current = canonical
             buffer = []
         else:
             buffer.append(line)
-    sections[current] = "\n".join(buffer).strip()
+    existing = sections.get(current, "")
+    sections[current] = (existing + "\n" + "\n".join(buffer)).strip() if existing else "\n".join(buffer).strip()
     return sections
 
 
@@ -83,12 +115,8 @@ def _clean_lines(block: str) -> list[str]:
 
 
 NAME_RE = re.compile(r"^[A-ZÀ-Ý][a-zà-ÿ'’.-]+(?:\s+[A-ZÀ-Ý][a-zà-ÿ'’.-]+){1,3}$")
-SECTION_HEADER_SET = {h.lower() for h in SECTION_HEADERS}
-SIDEBAR_MARKERS = {
-    "contact", "top skills", "languages", "certifications",
-    "licenses & certifications", "licenses and certifications",
-    "honors & awards", "summary", "experience", "education",
-}
+SECTION_HEADER_SET = set(HEADER_TO_CANONICAL.keys())
+SIDEBAR_MARKERS = SECTION_HEADER_SET | {"canonical"}
 
 
 def _looks_like_name(line: str) -> bool:
@@ -297,6 +325,20 @@ def _parse_languages(block: str) -> list[str]:
     return languages
 
 
+def _parse_skills(block: str, name: str, headline: str) -> list[str]:
+    head_fragments = {p.strip() for p in headline.split("|")} if headline else set()
+    skills: list[str] = []
+    for line in _clean_lines(block):
+        if line == name or "|" in line or line.startswith(("·", "www.", "+", "http")):
+            continue
+        if line in head_fragments or len(line) <= 1 or len(line) > 60:
+            continue
+        if line == name or LOCATION_LINE.search(line):
+            continue
+        skills.append(line)
+    return skills
+
+
 def _parse_certifications(block: str, name: str, headline: str) -> list[str]:
     head_fragments = {p.strip() for p in headline.split("|")} if headline else set()
     certs: list[str] = []
@@ -335,19 +377,16 @@ def parse_pdf(path: str | Path) -> Profile:
             if scan_name:
                 name = scan_name
 
-    # Certifications live in their own section; parse them excluding name/headline leak.
-    section_certs = _parse_certifications(
-        sections.get("certifications")
-        or sections.get("licenses & certifications")
-        or sections.get("licenses and certifications")
-        or "",
-        name,
-        headline,
-    )
+    # Skills and certifications live in their own (canonical) sections.
+    section_skills = _parse_skills(sections.get("skills", ""), name, headline)
+    if section_skills:
+        skills = section_skills
+
+    section_certs = _parse_certifications(sections.get("certifications", ""), name, headline)
     if section_certs:
         certs = section_certs
 
-    about = sections.get("summary") or sections.get("about") or ""
+    about = sections.get("summary", "")
     experiences = _parse_experiences(sections.get("experience", ""))
     education = _parse_education(sections.get("education", ""))
     languages = _parse_languages(sections.get("languages", ""))
