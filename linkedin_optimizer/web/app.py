@@ -66,7 +66,7 @@ def _build_ssi(brand: str, find_p: str, engage: str, relationships: str) -> tupl
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse("index.html", _index_context(request))
+    return templates.TemplateResponse(request, "index.html", _index_context(request))
 
 
 @app.post("/audit", response_class=HTMLResponse)
@@ -85,6 +85,7 @@ async def audit(
 ) -> HTMLResponse:
     if not profile_pdf.filename or not profile_pdf.filename.lower().endswith(".pdf"):
         return templates.TemplateResponse(
+            request,
             "index.html",
             _index_context(
                 request,
@@ -95,6 +96,7 @@ async def audit(
 
     if market not in MARKET_LABELS:
         return templates.TemplateResponse(
+            request,
             "index.html",
             _index_context(request, "Selecione Brasil ou Gringa como mercado."),
             status_code=400,
@@ -103,6 +105,7 @@ async def audit(
     ssi, ssi_error = _build_ssi(ssi_brand, ssi_find, ssi_engage, ssi_relationships)
     if ssi_error:
         return templates.TemplateResponse(
+            request,
             "index.html",
             _index_context(request, ssi_error),
             status_code=400,
@@ -116,6 +119,7 @@ async def audit(
         result = run_audit_from_pdf(pdf_path, target, ssi)
     except Exception as exc:
         return templates.TemplateResponse(
+            request,
             "index.html",
             _index_context(request, f"Não foi possível ler o PDF: {exc}"),
             status_code=400,
@@ -133,6 +137,7 @@ async def audit(
     infos = [f for f in result.findings if f.severity == "info"]
 
     return templates.TemplateResponse(
+        request,
         "result.html",
         {
             "request": request,
